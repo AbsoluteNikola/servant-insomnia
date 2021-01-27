@@ -24,16 +24,25 @@ common shared-properties
   default-extensions:
       TypeOperators
     , DataKinds
+    , RecordWildCards
+    , DuplicateRecordFields
+    , DeriveGeneric
+    , OverloadedStrings
+
   build-depends:
       base >=4.7 && <5
     , aeson
     , servant
     , servant-server
+    , text
+    , http-types
 
 library
   import: shared-properties
   exposed-modules:
-      Lib
+      Insomnia
+  other-modules:
+      Insomnia.Types
   hs-source-dirs:
       src
 
@@ -57,3 +66,5 @@ test-suite servant-insomnia-test
       test
   build-depends:
       servant-insomnia
+    , tasty
+    , tasty-hunit
