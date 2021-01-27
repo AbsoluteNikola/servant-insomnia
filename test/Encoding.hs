@@ -9,6 +9,8 @@ tests :: TestTree
 tests = testGroup "Encoding"
   [ testGroup "Workspace"
       [testDefaultWorkspace, testCustomWorkspace]
+  , testGroup "Environment"
+      [testDefaultEnvironment]
   ]
 
 {- Copy it from my insomnia export file
@@ -39,4 +41,12 @@ testCustomWorkspace = testCase "custom" $
     , "name" .= String "Name"
     , "description" .= String "Description"
     , "parentId" .= Null
+    ]
+
+testDefaultEnvironment :: TestTree
+testDefaultEnvironment = testCase "default" $
+  toJSON (createEnvironment defaultWorkspace) @?= object
+    [ "_id" .= String "Environment_of_Workspace_Servant-Insomnia"
+    , "_type" .= String "environment"
+    , "data" .= object [("baseUrl", "http://localhost:8080")]
     ]
