@@ -61,6 +61,7 @@ test-suite servant-insomnia-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+    Encoding
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   hs-source-dirs:
       test
