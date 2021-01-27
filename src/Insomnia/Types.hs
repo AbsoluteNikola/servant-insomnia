@@ -72,6 +72,7 @@ instance ToJSON Workspace where
     [ "_id" .= id
     , "_type" .= ("workspace" :: T.Text)
     , "name" .= name
+    , "description" .= description
     , "parentId" .= Null
     ]
 

@@ -41,8 +41,8 @@ library
   import: shared-properties
   exposed-modules:
       Insomnia
-  other-modules:
       Insomnia.Types
+  other-modules:
   hs-source-dirs:
       src
 
@@ -69,3 +69,4 @@ test-suite servant-insomnia-test
       servant-insomnia
     , tasty
     , tasty-hunit
+--    , aeson-qq
