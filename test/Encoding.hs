@@ -3,6 +3,7 @@ module Encoding (tests) where
 import Test.Tasty (testGroup, TestTree)
 import Test.Tasty.HUnit (testCase, (@?=))
 import Data.Aeson
+import Data.Aeson.QQ
 import Insomnia.Types
 
 tests :: TestTree
@@ -25,28 +26,33 @@ tests = testGroup "Encoding"
 
 testDefaultWorkspace :: TestTree
 testDefaultWorkspace = testCase "default" $
-  toJSON defaultWorkspace @?= object -- FIXME: change on aeson QQ
-    [ "_id" .= String "Workspace_Servant-Insomnia"
-    , "_type" .= String "workspace"
-    , "name" .= String "Servant-Insomnia"
-    , "description" .= String ""
-    , "parentId" .= Null
-    ]
+  toJSON defaultWorkspace @?= [aesonQQ|
+    {
+      "_id": "Workspace_Servant-Insomnia",
+      "_type": "workspace",
+      "name": "Servant-Insomnia",
+      "description": "",
+      "parentId": null
+    }|]
 
 testCustomWorkspace :: TestTree
 testCustomWorkspace = testCase "custom" $
-  toJSON (createWorkspace "Name" "Description") @?= object
-    [ "_id" .= String "Workspace_Name"
-    , "_type" .= String "workspace"
-    , "name" .= String "Name"
-    , "description" .= String "Description"
-    , "parentId" .= Null
-    ]
+  toJSON (createWorkspace "Name" "Description") @?= [aesonQQ|
+    {
+      "_id": "Workspace_Name",
+      "_type": "workspace",
+      "name": "Name",
+      "description": "Description",
+      "parentId": null
+    }|]
 
 testDefaultEnvironment :: TestTree
 testDefaultEnvironment = testCase "default" $
-  toJSON (createEnvironment defaultWorkspace) @?= object
-    [ "_id" .= String "Environment_of_Workspace_Servant-Insomnia"
-    , "_type" .= String "environment"
-    , "data" .= object [("baseUrl", "http://localhost:8080")]
-    ]
+  toJSON (createEnvironment defaultWorkspace) @?= [aesonQQ|
+    {
+      "_id": "Environment_of_Workspace_Servant-Insomnia",
+      "_type": "environment",
+      "data": {
+        "baseUrl": "http://localhost:8080"
+      }
+    }|]

@@ -28,6 +28,8 @@ common shared-properties
     , DuplicateRecordFields
     , DeriveGeneric
     , OverloadedStrings
+    , TemplateHaskell
+    , QuasiQuotes
 
   build-depends:
       base >=4.7 && <5
@@ -69,4 +71,4 @@ test-suite servant-insomnia-test
       servant-insomnia
     , tasty
     , tasty-hunit
---    , aeson-qq
+    , aeson-qq
