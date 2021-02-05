@@ -5,6 +5,7 @@ import Test.Tasty.HUnit (testCase, (@?=))
 import Data.Aeson
 import Data.Aeson.QQ
 import Insomnia.Types
+import Network.HTTP.Types ( StdMethod(..) )
 
 tests :: TestTree
 tests = testGroup "Encoding"
@@ -12,17 +13,9 @@ tests = testGroup "Encoding"
       [testDefaultWorkspace, testCustomWorkspace]
   , testGroup "Environment"
       [testDefaultEnvironment]
+  , testGroup "Request"
+      [testGetRequest, testPostRequest]
   ]
-
-{- Copy it from my insomnia export file
-  "_id": "wrk_761a347d19e74301a2b17a32081d1d61",
-  "_type": "workspace",
-  "created": 1605687254805,
-  "description": "",
-  "modified": 1605687254805,
-  "name": "Cool name",
-  "parentId": null,
--}
 
 testDefaultWorkspace :: TestTree
 testDefaultWorkspace = testCase "default" $
@@ -55,4 +48,30 @@ testDefaultEnvironment = testCase "default" $
       "data": {
         "baseUrl": "http://localhost:8080"
       }
+    }|]
+
+testGetRequest :: TestTree
+testGetRequest = testCase "GET /abc/qwe" $
+  toJSON (createRequest GET "/abc/qwe" defaultWorkspace) @?= [aesonQQ|
+    {
+      "_id": "Request_GET_/abc/qwe",
+      "_type": "request",
+      "url": "{{baseUrl}}/abc/qwe",
+      "name": "/abc/qwe",
+      "body": {},
+      "method": "GET",
+      "parentId": "Workspace_Servant-Insomnia"
+    }|]
+
+testPostRequest :: TestTree
+testPostRequest = testCase "POST /abc/qwe" $
+  toJSON (createRequest POST "/abc/qwe" defaultWorkspace) @?= [aesonQQ|
+    {
+      "_id": "Request_POST_/abc/qwe",
+      "_type": "request",
+      "url": "{{baseUrl}}/abc/qwe",
+      "name": "/abc/qwe",
+      "body": {},
+      "method": "POST",
+      "parentId": "Workspace_Servant-Insomnia"
     }|]

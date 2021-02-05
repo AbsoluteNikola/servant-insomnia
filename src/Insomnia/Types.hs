@@ -16,8 +16,8 @@ data Request = Request
   } deriving (Show, Eq, Generic)
 
 -- | smart constructor for 'Request'
-createRequest :: StdMethod -> Workspace -> T.Text -> Request
-createRequest method Workspace{id=parentId} url' = Request{..}
+createRequest :: StdMethod -> T.Text -> Workspace -> Request
+createRequest method url' Workspace{id=parentId} = Request{..}
   where
     url = "{{baseUrl}}" <> url'
     name = url'
@@ -65,6 +65,7 @@ instance ToJSON Request where
     , "name" .= name
     , "url" .= url
     , "parentId" .= parentId
+    , "body" .= object []
     ]
 
 instance ToJSON Workspace where
@@ -79,6 +80,6 @@ instance ToJSON Workspace where
 instance ToJSON Environment where
   toJSON Environment{..} = object
     [ "_id" .= id
-    , "_type" .= ("environment" :: T.Text )
+    , "_type" .= ("environment" :: T.Text)
     , ("data", object . map (fmap String) $ pairs)
     ]
