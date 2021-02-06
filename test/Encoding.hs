@@ -3,7 +3,7 @@ module Encoding (tests) where
 import Test.Tasty (testGroup, TestTree)
 import Test.Tasty.HUnit (testCase, (@?=))
 import Data.Aeson
-import Data.Aeson.QQ
+import Data.Aeson.QQ.Simple
 import Insomnia.Types
 import Network.HTTP.Types ( StdMethod(..) )
 

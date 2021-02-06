@@ -28,6 +28,12 @@ class HasInsomnia api where
 instance HasInsomnia EmptyAPI where
   toInsomnia _ = mempty
 
+instance (HasInsomnia a, HasInsomnia b) => HasInsomnia (a :<|> b) where
+  toInsomnia _ currentPath = a <> b
+    where
+      a = toInsomnia (Proxy :: Proxy a) currentPath
+      b = toInsomnia (Proxy :: Proxy b) currentPath
+
 instance (KnownSymbol path, HasInsomnia api) => HasInsomnia (path :> api) where
   toInsomnia _ currentPath =
     toInsomnia (Proxy :: Proxy api) (currentPath <> pathPart <> "/")

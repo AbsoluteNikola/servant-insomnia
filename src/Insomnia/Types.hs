@@ -20,7 +20,9 @@ createRequest :: StdMethod -> T.Text -> Workspace -> Request
 createRequest method url' Workspace{id=parentId} = Request{..}
   where
     url = "{{baseUrl}}" <> url'
-    name = url'
+    name = if T.last url' == '/'
+      then T.init url' -- remove ending /
+      else url'
     id = "Request_" <> (T.pack . show $ method) <> "_" <> url'
 
 data Workspace = Workspace
