@@ -54,6 +54,26 @@ createEnvironment Workspace{id=parentId} = Environment{..}
     pairs = [("baseUrl", "http://localhost:8080")]
     id = "Environment_of_" <> parentId
 
+data Insomnia = Insomnia
+  { workspace :: Workspace
+  , environment :: Environment
+  , requests :: [Request]
+  }
+
+instance Semigroup  Insomnia where
+  x <> y = Insomnia w env rqs
+    where
+      w = workspace x
+      env = environment x
+      rqs = requests x <> requests y
+
+instance Monoid Insomnia where
+  mempty = Insomnia
+    { workspace=defaultWorkspace
+    , environment=createEnvironment defaultWorkspace
+    , requests=[]
+    }
+
 instance ToJSON StdMethod where
   toJSON  = String . T.pack . show
 
