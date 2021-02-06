@@ -60,7 +60,8 @@ testGetRequest = testCase "GET /abc/qwe" $
       "name": "/abc/qwe",
       "body": {},
       "method": "GET",
-      "parentId": "Workspace_Servant-Insomnia"
+      "parentId": "Workspace_Servant-Insomnia",
+      "description": ""
     }|]
 
 testPostRequest :: TestTree
@@ -73,5 +74,6 @@ testPostRequest = testCase "POST /abc/qwe" $
       "name": "/abc/qwe",
       "body": {},
       "method": "POST",
-      "parentId": "Workspace_Servant-Insomnia"
+      "parentId": "Workspace_Servant-Insomnia",
+      "description": ""
     }|]

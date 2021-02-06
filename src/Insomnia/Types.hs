@@ -12,6 +12,7 @@ data Request = Request
   , url :: T.Text
     -- ^ path (e.g /book/1) under the hood {{baseUrl}} will be added
   , name :: T.Text -- ^ will be equal to url, but may be overwritten
+  , description :: T.Text -- ^ generate it from Description and Summary
   , id :: T.Text -- ^ random id. May will be equal to url
   } deriving (Show, Eq, Generic)
 
@@ -24,6 +25,7 @@ createRequest method url' Workspace{id=parentId} = Request{..}
       then T.init url' -- remove ending /
       else url'
     id = "Request_" <> (T.pack . show $ method) <> "_" <> url'
+    description = ""
 
 data Workspace = Workspace
   { name :: T.Text -- ^ will be servant-insomnia if was not overwritten
@@ -87,6 +89,7 @@ instance ToJSON Request where
     , "name" .= name
     , "url" .= url
     , "parentId" .= parentId
+    , "description" .= description
     , "body" .= object []
     ]
 

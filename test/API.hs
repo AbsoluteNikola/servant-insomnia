@@ -14,7 +14,7 @@ tests = testGroup "Full"
 type TestApi = "books" :>
   (    Get '[JSON] [Int]
   :<|> (ReqBody '[JSON] Int :> Post '[] NoContent)
-  :<|> Capture "id" Int :> Get '[JSON] Int
+  :<|> Description "Book" :> Capture "id" Int :> Get '[JSON] Int
   )
 
 testApi :: Proxy TestApi
@@ -49,7 +49,8 @@ testApiEncoding = testCase "books" $
         "url": "{{baseUrl}}/books/",
         "name": "/books",
         "method": "GET",
-        "parentId": "Workspace_Servant-Insomnia"
+        "parentId": "Workspace_Servant-Insomnia",
+        "description": ""
       },
       {
         "_type": "request",
@@ -58,7 +59,8 @@ testApiEncoding = testCase "books" $
         "url": "{{baseUrl}}/books/",
         "name": "/books",
         "method": "POST",
-        "parentId": "Workspace_Servant-Insomnia"
+        "parentId": "Workspace_Servant-Insomnia",
+        "description": ""
       },
       {
         "_type": "request",
@@ -67,7 +69,8 @@ testApiEncoding = testCase "books" $
         "url": "{{baseUrl}}/books/:id/",
         "name": "/books/:id",
         "method": "GET",
-        "parentId": "Workspace_Servant-Insomnia"
+        "parentId": "Workspace_Servant-Insomnia",
+        "description": "Book"
       }
     ]
   }
