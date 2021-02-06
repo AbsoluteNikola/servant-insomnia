@@ -32,6 +32,8 @@ common shared-properties
     , QuasiQuotes
     , KindSignatures
     , ScopedTypeVariables
+    , MultiParamTypeClasses
+    , FlexibleInstances
 
   build-depends:
       base >=4.7 && <5

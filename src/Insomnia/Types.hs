@@ -35,7 +35,7 @@ createWorkspace name description = Workspace{..}
   where
     id = "Workspace_" <> name
 
--- | default 'Workspace'
+-- | default 'Workspace' There is no way to use another workspace for now
 defaultWorkspace :: Workspace
 defaultWorkspace = createWorkspace "Servant-Insomnia" ""
 
@@ -58,7 +58,7 @@ data Insomnia = Insomnia
   { workspace :: Workspace
   , environment :: Environment
   , requests :: [Request]
-  }
+  } deriving (Show, Eq, Generic)
 
 instance Semigroup  Insomnia where
   x <> y = Insomnia w env rqs
@@ -102,4 +102,13 @@ instance ToJSON Environment where
     [ "_id" .= id
     , "_type" .= ("environment" :: T.Text)
     , ("data", object . map (fmap String) $ pairs)
+    ]
+
+instance ToJSON Insomnia where
+  toJSON Insomnia{..} = object
+    [ "_type" .= ("export" :: T.Text)
+    , "__export_format" .= (4 :: Int)
+    , "__export_source" .= ("servant-insomnia:v0.1" :: T.Text)
+    , "resources" .=
+        ([toJSON workspace, toJSON environment] ++ map toJSON requests)
     ]
