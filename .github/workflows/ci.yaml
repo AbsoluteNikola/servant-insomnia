@@ -1,0 +1,45 @@
+on: [push]
+name: CI
+jobs:
+  tests:
+    name: tests / stack
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        resolver:
+          - "lts-17" # ghc-8.10
+          - "lts-16" # ghc-8.8
+          - "lts-14" # ghc-8.6
+        exclude:
+          - os: macOS-latest
+            resolver: "lts-16"
+          - os: macOS-latest
+            resolver: "lts-14"
+          - os: windows-latest
+            resolver: "lts-16"
+          - os: windows-latest
+            resolver: "lts-14"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: haskell/actions/setup@v1
+        with:
+          enable-stack: true
+          stack-no-global: true
+          stack-version: 'latest'
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.stack
+            .stack-work
+          key: ${{ matrix.os }}-${{ matrix.resolver }}
+
+      - name: Build library, tests
+        run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
+
+      - name: Test
+        run: stack test --resolver=${{ matrix.resolver }}
