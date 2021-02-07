@@ -8,9 +8,9 @@ jobs:
       matrix:
         os: [ubuntu-latest] # TODO: add more os
         resolver:
-          - "lts-17"
-          - "lts-16"
-          - "lts-14"
+          - "lts-17" # ghc-8.10
+          - "lts-16" # ghc-8.8
+          - "lts-14" # ghc-8.6
 
     steps:
       - uses: actions/checkout@v2
