@@ -10,7 +10,7 @@ jobs:
         resolver:
           - "lts-17"
           - "lts-16"
-          - "lst-14"
+          - "lts-14"
 
     steps:
       - uses: actions/checkout@v2
