@@ -1,20 +1,14 @@
-cabal-version: 1.12
-
--- This file has been generated from package.yaml by hpack version 0.33.0.
---
--- see: https://github.com/sol/hpack
---
--- hash: 910a01369c47d5bae4770769c65ea22ec89c3e390fa1ffbbfab9a23b71ddebb1
+cabal-version: 2.2
 
 name:           servant-insomnia
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/servant-insomnia#readme>
-homepage:       https://github.com/githubuser/servant-insomnia#readme
-bug-reports:    https://github.com/githubuser/servant-insomnia/issues
-author:         Author name here
+description:    Please see the README on GitHub at <https://github.com/AbsoluteNikola/servant-insomnia#readme>
+homepage:       https://github.com/AbsoluteNikola/servant-insomnia#readme
+bug-reports:    https://github.com/AbsoluteNikola/servant-insomnia/issues
+author:         Nikolay Rulev
 maintainer:     example@example.com
-copyright:      2021 Author name here
-license:        BSD3
+copyright:      2021 Nikolay Rulev
+license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
@@ -25,38 +19,61 @@ source-repository head
   type: git
   location: https://github.com/githubuser/servant-insomnia
 
+common shared-properties
+  default-language: Haskell2010
+  default-extensions:
+      TypeOperators
+    , DataKinds
+    , RecordWildCards
+    , DuplicateRecordFields
+    , DeriveGeneric
+    , OverloadedStrings
+    , TemplateHaskell
+    , QuasiQuotes
+    , KindSignatures
+    , ScopedTypeVariables
+    , MultiParamTypeClasses
+    , FlexibleInstances
+
+  build-depends:
+      base >=4.7 && <5
+    , aeson
+    , servant
+    , servant-server
+    , text
+    , http-types
+
 library
+  import: shared-properties
   exposed-modules:
-      Lib
+      Insomnia
+      Insomnia.Types
+      Insomnia.Typelevel
   other-modules:
-      Paths_servant_insomnia
   hs-source-dirs:
       src
-  build-depends:
-      base >=4.7 && <5
-  default-language: Haskell2010
 
 executable servant-insomnia-exe
+  import: shared-properties
   main-is: Main.hs
   other-modules:
-      Paths_servant_insomnia
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
-    , servant-insomnia
-  default-language: Haskell2010
+      servant-insomnia
 
 test-suite servant-insomnia-test
+  import: shared-properties
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_servant_insomnia
+      Encoding
+    , API
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
-    , servant-insomnia
-  default-language: Haskell2010
+      servant-insomnia
+    , tasty
+    , tasty-hunit
