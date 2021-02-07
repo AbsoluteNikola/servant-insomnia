@@ -2,25 +2,22 @@ on: [push]
 name: CI
 jobs:
   tests:
+    # TODO: add macos and windows support
     name: tests / stack
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest]
         resolver:
           - "lts-17" # ghc-8.10
           - "lts-16" # ghc-8.8
           - "lts-14" # ghc-8.6
-        exclude:
-          - os: macOS-latest
-            resolver: "lts-16"
-          - os: macOS-latest
-            resolver: "lts-14"
-          - os: windows-latest
-            resolver: "lts-16"
-          - os: windows-latest
-            resolver: "lts-14"
+        # exclude:
+          # - os: macOS-latest
+          #   resolver: "lts-17"
+          # - os: macOS-latest
+          #   resolver: "lts-14"
 
     steps:
       - uses: actions/checkout@v2
