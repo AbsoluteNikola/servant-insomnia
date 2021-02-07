@@ -31,10 +31,21 @@ jobs:
           stack-no-global: true
           stack-version: 'latest'
 
+      # Cache dirs for unix os
       - uses: actions/cache@v2
+        if: ${{ matrix.os != 'windows-latest'}}
         with:
           path: |
             ~/.stack
+            .stack-work
+          key: ${{ matrix.os }}-${{ matrix.resolver }}
+
+      # Cache dirs for
+      - uses: actions/cache@v2
+        if: ${{ matrix.os == 'windows-latest'}}
+        with:
+          path: |
+            %LOCALAPPDATA%\Programs\stack
             .stack-work
           key: ${{ matrix.os }}-${{ matrix.resolver }}
 
