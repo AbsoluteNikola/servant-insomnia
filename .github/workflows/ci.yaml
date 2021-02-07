@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest] # TODO: add more os
+        os: [ubuntu-latest, macOS-latest]
         resolver:
           - "lts-17" # ghc-8.10
           - "lts-16" # ghc-8.8
@@ -31,30 +31,14 @@ jobs:
           stack-no-global: true
           stack-version: 'latest'
 
-      # Cache dirs for unix os
       - uses: actions/cache@v2
-        if: ${{ matrix.os != 'windows-latest'}}
         with:
           path: |
             ~/.stack
             .stack-work
           key: ${{ matrix.os }}-${{ matrix.resolver }}
 
-      # Cache dirs for windows
-      - uses: actions/cache@v2
-        if: ${{ matrix.os == 'windows-latest'}}
-        with:
-          path: |
-            %LOCALAPPDATA%\Programs\stack
-            .stack-work
-          key: ${{ matrix.os }}-${{ matrix.resolver }}
-
-      - if: ${{ matrix.os != 'ubuntu-latest' }}
-        name: Build library, tests (win/mac)
-        run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
-
-      - if: ${{ matrix.os == 'ubuntu-latest' }}
-        name: Build library, tests and documentation (linux)
+      - name: Build library, tests
         run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
 
       - name: Test
