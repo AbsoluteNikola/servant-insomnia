@@ -11,6 +11,15 @@ jobs:
           - "lts-17" # ghc-8.10
           - "lts-16" # ghc-8.8
           - "lts-14" # ghc-8.6
+        exclude:
+          - os: macOS-latest
+            resolver: "lts-16"
+          - os: macOS-latest
+            resolver: "lts-14"
+          - os: windows-latest
+            resolver: "lts-16"
+          - os: windows-latest
+            resolver: "lts-14"
 
     steps:
       - uses: actions/checkout@v2
@@ -28,8 +37,8 @@ jobs:
             .stack-work
           key: ${{ matrix.os }}-${{ matrix.resolver }}
 
-      - name: Build
-        run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
+      - name: Build library, tests and docs
+        run: stack build --resolver=${{ matrix.resolver }} --haddock --test --no-run-tests
 
       - name: Test
         run: stack test --resolver=${{ matrix.resolver }}
