@@ -38,12 +38,13 @@ jobs:
             .stack-work
           key: ${{ matrix.os }}-${{ matrix.resolver }}
 
-      - name: Build library, tests
+      - if: ${{ matrix.os != 'ubuntu-latest' }}
+        name: Build library, tests (win/mac)
         run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
 
       - if: ${{ matrix.os == 'ubuntu-latest' }}
-        name: Build documentation
-        run: stack haddock
+        name: Build library, tests and documentation (linux)
+        run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests --haddock
 
       - name: Test
         run: stack test --resolver=${{ matrix.resolver }}
