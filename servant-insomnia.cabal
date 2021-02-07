@@ -34,6 +34,8 @@ common shared-properties
     , ScopedTypeVariables
     , MultiParamTypeClasses
     , FlexibleInstances
+    , TypeApplications
+    , AllowAmbiguousTypes
 
   build-depends:
       base >=4.7 && <5
@@ -42,6 +44,7 @@ common shared-properties
     , servant-server
     , text
     , http-types
+    , template-haskell
 
 library
   import: shared-properties
@@ -49,19 +52,10 @@ library
       Insomnia
       Insomnia.Types
       Insomnia.Typelevel
+      Insomnia.TH
   other-modules:
   hs-source-dirs:
       src
-
-executable servant-insomnia-exe
-  import: shared-properties
-  main-is: Main.hs
-  other-modules:
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  hs-source-dirs:
-      app
-  build-depends:
-      servant-insomnia
 
 test-suite servant-insomnia-test
   import: shared-properties
@@ -70,6 +64,7 @@ test-suite servant-insomnia-test
   other-modules:
       Encoding
     , API
+    , TH
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   hs-source-dirs:
       test
