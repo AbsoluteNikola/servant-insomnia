@@ -5,6 +5,7 @@ jobs:
     name: tests / stack
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest] # TODO: add more os
         resolver:
@@ -37,8 +38,12 @@ jobs:
             .stack-work
           key: ${{ matrix.os }}-${{ matrix.resolver }}
 
-      - name: Build library, tests and docs
-        run: stack build --resolver=${{ matrix.resolver }} --haddock --test --no-run-tests
+      - name: Build library, tests
+        run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
+
+      - if: ${{ matrix.os == 'ubuntu-latest' }}
+        name: Build documentation
+        run: stack haddock
 
       - name: Test
         run: stack test --resolver=${{ matrix.resolver }}
