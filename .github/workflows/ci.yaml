@@ -7,7 +7,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest] # TODO: add more os
-        resolver: ["lts-17", "lts-16", "lst-14"]
+        resolver:
+          - "lts-17"
+          - "lts-16"
+          - "lst-14"
 
     steps:
       - uses: actions/checkout@v2
@@ -26,7 +29,7 @@ jobs:
           key: ${{ matrix.os }}-${{resolver}}
 
       - name: Build
-        run: stack build --test --no-run-tests
+        run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
 
       - name: Test
-        run: stack test
+        run: stack test --resolver=${{ matrix.resolver }}
