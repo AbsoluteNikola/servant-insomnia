@@ -132,3 +132,6 @@ instance HasInsomnia api => HasInsomnia (IsSecure :> api) where
 
 instance HasInsomnia api => HasInsomnia (WithNamedContext name c api) where
   toInsomnia _ = toInsomnia (Proxy :: Proxy api)
+
+instance HasInsomnia api => HasInsomnia (RemoteHost :> api) where
+  toInsomnia _ = toInsomnia (Proxy :: Proxy api)
