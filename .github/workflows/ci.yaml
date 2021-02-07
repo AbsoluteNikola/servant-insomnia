@@ -26,7 +26,7 @@ jobs:
           path: |
             ~/.stack
             .stack-work
-          key: ${{ matrix.os }}-${{resolver}}
+          key: ${{ matrix.os }}-${{ matrix.resolver }}
 
       - name: Build
         run: stack build --resolver=${{ matrix.resolver }} --test --no-run-tests
