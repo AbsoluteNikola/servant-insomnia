@@ -33,6 +33,7 @@ tests = testGroup "Template Haskell"
           {
             "_id": "Environment_of_Workspace_Servant-Insomnia",
             "_type": "environment",
+            "parentId": "Workspace_Servant-Insomnia",
             "data": {
               "baseUrl": "http://localhost:8080"
             }
@@ -45,7 +46,9 @@ tests = testGroup "Template Haskell"
             "method": "GET",
             "name": "/hello",
             "parentId": "Workspace_Servant-Insomnia",
-            "url": "{{baseUrl}}/hello/"
+            "url": "{{baseUrl}}/hello/",
+            "headers": [],
+            "parameters": []
           }
         ]
       }

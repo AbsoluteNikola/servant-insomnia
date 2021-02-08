@@ -12,7 +12,7 @@ tests = testGroup "Full"
   [testApiEncoding]
 
 type TestApi = "books" :>
-  (    Get '[JSON] [Int]
+  (    Header "header" Int :> QueryParam "param" Int :> Get '[JSON] [Int]
   :<|> (ReqBody '[JSON] Int :> Post '[] NoContent)
   :<|> Description "Book" :> Capture "id" Int :> Get '[JSON] Int
   )
@@ -38,6 +38,7 @@ testApiEncoding = testCase "books" $
       {
         "_type": "environment",
         "_id": "Environment_of_Workspace_Servant-Insomnia",
+        "parentId": "Workspace_Servant-Insomnia",
         "data": {
           "baseUrl": "http://localhost:8080"
         }
@@ -50,7 +51,13 @@ testApiEncoding = testCase "books" $
         "name": "/books",
         "method": "GET",
         "parentId": "Workspace_Servant-Insomnia",
-        "description": ""
+        "description": "",
+        "headers": [
+          {"name": "header", "value": ""}
+        ],
+        "parameters": [
+          {"name": "param", "value":"", "disabled": true}
+        ]
       },
       {
         "_type": "request",
@@ -60,7 +67,9 @@ testApiEncoding = testCase "books" $
         "name": "/books",
         "method": "POST",
         "parentId": "Workspace_Servant-Insomnia",
-        "description": ""
+        "description": "",
+        "headers": [],
+        "parameters": []
       },
       {
         "_type": "request",
@@ -70,7 +79,9 @@ testApiEncoding = testCase "books" $
         "name": "/books/:id",
         "method": "GET",
         "parentId": "Workspace_Servant-Insomnia",
-        "description": "Book"
+        "description": "Book",
+        "headers": [],
+        "parameters": []
       }
     ]
   }

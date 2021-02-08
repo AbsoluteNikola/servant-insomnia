@@ -1,9 +1,8 @@
-{-# LANGUAGE TypeApplications #-}
-module Insomnia.Typelevel where
+module Insomnia.Typelevel (HasInsomnia(..)) where
 
 import Insomnia.Types
 import Network.HTTP.Types (StdMethod(..))
-import Servant
+import Servant hiding (addHeader)
 import Data.Data
 import qualified Data.Text as T
 import GHC.TypeLits
@@ -44,20 +43,40 @@ instance (KnownSymbol path, HasInsomnia api) => HasInsomnia (path :> api) where
       pathPart = T.pack $ symbolVal (Proxy :: Proxy path)
 
 -- TODO: add query params support
-instance HasInsomnia api => HasInsomnia (QueryParam' mods name t :> api) where
-  toInsomnia _ = toInsomnia (Proxy :: Proxy api)
+instance (KnownSymbol name, HasInsomnia api)
+  => HasInsomnia (QueryParam' mods name t :> api) where
+  toInsomnia _ = addParameter paramName . toInsomnia (Proxy :: Proxy api)
+    where paramName =  T.pack $ symbolVal (Proxy :: Proxy name)
 
 -- TODO: add query flags support
-instance HasInsomnia api => HasInsomnia (QueryFlag name :> api) where
-  toInsomnia _ = toInsomnia (Proxy :: Proxy api)
+instance (KnownSymbol name, HasInsomnia api)
+  => HasInsomnia (QueryFlag name :> api) where
+  toInsomnia _ = addParameter paramName . toInsomnia (Proxy :: Proxy api)
+    where paramName =  T.pack $ symbolVal (Proxy :: Proxy name)
 
 -- TODO: add with the same functionality as simple param
-instance HasInsomnia api => HasInsomnia (QueryParams name t :> api) where
-  toInsomnia _ = toInsomnia (Proxy :: Proxy api)
+instance (KnownSymbol name, HasInsomnia api)
+  => HasInsomnia (QueryParams name t :> api) where
+  toInsomnia _ = addParameter paramName . toInsomnia (Proxy :: Proxy api)
+    where paramName =  T.pack $ symbolVal (Proxy :: Proxy name)
+
+addParameter :: T.Text -> Insomnia -> Insomnia
+addParameter param ins = ins{requests=updatedRequests}
+  where
+    updatedRequests = map updateRequest (requests ins)
+    updateRequest req = req{params=param : params req}
+
+addHeader :: T.Text -> Insomnia -> Insomnia
+addHeader header ins = ins{requests=updatedRequests}
+  where
+    updatedRequests = map updateRequest (requests ins)
+    updateRequest req = req {headers=header : headers req}
 
 -- TODO: generate headers from this combinator
-instance HasInsomnia api => HasInsomnia (Header' mods name t :> api) where
-  toInsomnia _ = toInsomnia (Proxy :: Proxy api)
+instance (KnownSymbol name, HasInsomnia api) => HasInsomnia (Header' mods name t :> api) where
+  toInsomnia _ = addHeader headerName . toInsomnia (Proxy :: Proxy api)
+    where headerName =  T.pack $ symbolVal (Proxy :: Proxy name)
+
 
 -- TODO: generate body type from this combinator
 instance HasInsomnia api
@@ -131,4 +150,7 @@ instance HasInsomnia api => HasInsomnia (IsSecure :> api) where
   toInsomnia _ = toInsomnia (Proxy :: Proxy api)
 
 instance HasInsomnia api => HasInsomnia (WithNamedContext name c api) where
+  toInsomnia _ = toInsomnia (Proxy :: Proxy api)
+
+instance HasInsomnia api => HasInsomnia (RemoteHost :> api) where
   toInsomnia _ = toInsomnia (Proxy :: Proxy api)

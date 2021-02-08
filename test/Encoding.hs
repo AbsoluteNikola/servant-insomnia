@@ -45,6 +45,7 @@ testDefaultEnvironment = testCase "default" $
     {
       "_id": "Environment_of_Workspace_Servant-Insomnia",
       "_type": "environment",
+      "parentId": "Workspace_Servant-Insomnia",
       "data": {
         "baseUrl": "http://localhost:8080"
       }
@@ -59,6 +60,8 @@ testGetRequest = testCase "GET /abc/qwe" $
       "url": "{{baseUrl}}/abc/qwe",
       "name": "/abc/qwe",
       "body": {},
+      "headers" : [],
+      "parameters" : [],
       "method": "GET",
       "parentId": "Workspace_Servant-Insomnia",
       "description": ""
@@ -73,6 +76,8 @@ testPostRequest = testCase "POST /abc/qwe" $
       "url": "{{baseUrl}}/abc/qwe",
       "name": "/abc/qwe",
       "body": {},
+      "headers" : [],
+      "parameters" : [],
       "method": "POST",
       "parentId": "Workspace_Servant-Insomnia",
       "description": ""
