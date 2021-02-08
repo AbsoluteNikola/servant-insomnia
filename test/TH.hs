@@ -45,7 +45,9 @@ tests = testGroup "Template Haskell"
             "method": "GET",
             "name": "/hello",
             "parentId": "Workspace_Servant-Insomnia",
-            "url": "{{baseUrl}}/hello/"
+            "url": "{{baseUrl}}/hello/",
+            "headers": [],
+            "parameters": []
           }
         ]
       }

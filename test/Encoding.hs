@@ -59,6 +59,8 @@ testGetRequest = testCase "GET /abc/qwe" $
       "url": "{{baseUrl}}/abc/qwe",
       "name": "/abc/qwe",
       "body": {},
+      "headers" : [],
+      "parameters" : [],
       "method": "GET",
       "parentId": "Workspace_Servant-Insomnia",
       "description": ""
@@ -73,6 +75,8 @@ testPostRequest = testCase "POST /abc/qwe" $
       "url": "{{baseUrl}}/abc/qwe",
       "name": "/abc/qwe",
       "body": {},
+      "headers" : [],
+      "parameters" : [],
       "method": "POST",
       "parentId": "Workspace_Servant-Insomnia",
       "description": ""

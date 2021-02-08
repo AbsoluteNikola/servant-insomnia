@@ -14,6 +14,8 @@ data Request = Request
   , name :: T.Text -- ^ will be equal to url, but may be overwritten
   , description :: T.Text -- ^ generate it from Description and Summary
   , id :: T.Text -- ^ random id. May will be equal to url
+  , headers :: [T.Text] -- ^ headers names list
+  , params  :: [T.Text] -- ^ query parameters names list
   } deriving (Show, Eq, Generic)
 
 -- | smart constructor for 'Request'
@@ -26,6 +28,8 @@ createRequest method url' Workspace{id=parentId} = Request{..}
       else url'
     id = "Request_" <> (T.pack . show $ method) <> "_" <> url'
     description = ""
+    params = []
+    headers = []
 
 data Workspace = Workspace
   { name :: T.Text -- ^ will be servant-insomnia if was not overwritten
@@ -91,8 +95,14 @@ instance ToJSON Request where
     , "parentId" .= parentId
     , "description" .= description
     , "body" .= object []
+    , "headers" .= map crateHeaderObject headers
+    , "parameters" .= map createParamObject params
     ]
-
+    where
+      crateHeaderObject name = object
+        ["name" .= name, "value" .= ("" :: T.Text)]
+      createParamObject name = object
+        ["name" .= name, "value" .= ("" :: T.Text), "disabled" .= True]
 instance ToJSON Workspace where
   toJSON Workspace{..} = object
     [ "_id" .= id
