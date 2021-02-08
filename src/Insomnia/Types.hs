@@ -116,6 +116,7 @@ instance ToJSON Environment where
   toJSON Environment{..} = object
     [ "_id" .= id
     , "_type" .= ("environment" :: T.Text)
+    , "parentId" .= parentId
     , ("data", object . map (fmap String) $ pairs)
     ]
 

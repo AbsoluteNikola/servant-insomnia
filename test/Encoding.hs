@@ -45,6 +45,7 @@ testDefaultEnvironment = testCase "default" $
     {
       "_id": "Environment_of_Workspace_Servant-Insomnia",
       "_type": "environment",
+      "parentId": "Workspace_Servant-Insomnia",
       "data": {
         "baseUrl": "http://localhost:8080"
       }

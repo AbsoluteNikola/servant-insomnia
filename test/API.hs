@@ -38,6 +38,7 @@ testApiEncoding = testCase "books" $
       {
         "_type": "environment",
         "_id": "Environment_of_Workspace_Servant-Insomnia",
+        "parentId": "Workspace_Servant-Insomnia",
         "data": {
           "baseUrl": "http://localhost:8080"
         }
